@@ -72,7 +72,7 @@ def main():
     """Основная функция."""
     base_url = 'https://www.auchan.ru/catalog/sobstvennye-marki-ashan/kazhdyy-den/bakaleya/'
     links = get_all_product_link(base_url)
-    with open('products.txt', "w", encoding='utf-8') as file:
+    with open('products.csv', "w", encoding='utf-8') as file:
         for link in links:
             product_data = scrape_product_data(link)
             file.write(product_data)
