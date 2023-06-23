@@ -1,11 +1,7 @@
-import requests
-import csv
-from bs4 import BeautifulSoup
-from selenium import webdriver
 import time
 import undetected_chromedriver
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.by import By
+
+from bs4 import BeautifulSoup
 
 
 def get_product_links(url):
@@ -76,7 +72,7 @@ def main():
     """Основная функция."""
     base_url = 'https://www.auchan.ru/catalog/sobstvennye-marki-ashan/kazhdyy-den/bakaleya/'
     links = get_all_product_link(base_url)
-    with open('products.txt', "w") as file:
+    with open('products.txt', "w", encoding='utf-8') as file:
         for link in links:
             product_data = scrape_product_data(link)
             file.write(product_data)
