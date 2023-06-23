@@ -1,4 +1,5 @@
 import requests
+import csv
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
@@ -31,7 +32,7 @@ def scrape_product_data(url):
     """Функция находит на странице теги товара и забирает их."""
     driver = undetected_chromedriver.Chrome()
     driver.get(url)
-    time.sleep(2)
+    time.sleep(3)
 
     soup = BeautifulSoup(driver.page_source, 'html.parser')
 
@@ -46,7 +47,7 @@ def scrape_product_data(url):
     brend_prod = soup.find('a', class_='css-9bo89x').text
 
     driver.quit()
-    return f'{title}, {price}, {price_full}, {tr_tag}, {brend_prod}, {url}'
+    return f'{title}, {price}, {price_full}, {tr_tag}, {brend_prod}, {url}\n'
 
 
 def get_all_product_link(url):
@@ -54,7 +55,7 @@ def get_all_product_link(url):
     links = []
     driver = undetected_chromedriver.Chrome()
     driver.get(url)
-    time.sleep(2)
+    time.sleep(3)
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     product_link = get_product_links(driver.current_url)
     links.extend(product_link)
@@ -75,12 +76,11 @@ def main():
     """Основная функция."""
     base_url = 'https://www.auchan.ru/catalog/sobstvennye-marki-ashan/kazhdyy-den/bakaleya/'
     links = get_all_product_link(base_url)
-    count_link = len(links)
-    file = open('products.csv', 'w', encoding="utf-8")
-    for link in links:
-        product_data = scrape_product_data(link)
-        file.write(product_data)
-    file.close()
+    with open('products.txt', "w") as file:
+        for link in links:
+            product_data = scrape_product_data(link)
+            file.write(product_data)
+        file.close()
 
 
 if __name__ == '__main__':
